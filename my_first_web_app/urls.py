@@ -18,18 +18,34 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import path
 
+
 def home_page(request):
     response = render(request, 'index.html')
     return HttpResponse(response)
 
+
 def portfolio(request):
-    random_number = randint(0,100)
-    image_url = "https://picsum.photos/400/600/?image={}".format(random_number)
-    context = {'gallery_image': image_url}
+    image_urls = []
+    for i in range(5):
+        random_number = randint(0, 100)
+        image_urls.append("https://picsum.photos/400/600/?image={}".format(random_number))
+
+    context = {'gallery_images': image_urls}
     response = render(request, 'gallery.html', context)
     return HttpResponse(response)
 
+
+def about_me(request):
+    skills = ['python', 'django', 'watching netflix']
+    interests = ['sports', 'music', 'coding']
+
+    context = {'my_skills': skills, 'my_interests': interests}
+    response = render(request, 'about_me.html', context)
+    return HttpResponse(response)
+
+
 urlpatterns = [
     path('home/', home_page),
-    path('portfolio/', portfolio)
+    path('portfolio/', portfolio),
+    path('about/', about_me)
 ]
